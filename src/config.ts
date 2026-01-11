@@ -25,20 +25,3 @@ export const API_CONFIG = {
   },
 } as const;
 
-/**
- * Get the API endpoint based on environment
- * @param env - 'local' | 'prod' | 'default'
- * @returns The API endpoint URL
- */
-export function getApiEndpoint(env: 'local' | 'prod' | 'default' = 'default'): string {
-  switch (env) {
-    case 'local':
-      return API_CONFIG.LOCAL;
-    case 'prod':
-      return API_CONFIG.PROD;
-    case 'default':
-      return API_CONFIG.DEFAULT;
-    default:
-      return API_CONFIG.DEFAULT;
-  }
-}
