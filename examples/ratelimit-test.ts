@@ -8,7 +8,8 @@
  * Test types: sequential, parallel, burst, all (default)
  */
 
-import { getApiEndpoint } from '../src/config.ts';
+import { API_CONFIG } from '../src/config.ts';
+const API_ENDPOINT = API_CONFIG.PROD;
 
 /**
  * Makes a single request to the API and returns the result
@@ -21,7 +22,7 @@ async function makeRequest(requestNumber: number): Promise<{
   timestamp: string;
 }> {
   try {
-    const response = await fetch(getApiEndpoint());
+    const response = await fetch(API_ENDPOINT);
     const data = await response.json();
     
     return {
@@ -169,7 +170,7 @@ async function burstTest(burstSize: number = 10, burstCount: number = 7) {
  */
 async function runTests() {
   console.log('\n🚀 GetIP API Rate Limit Testing\n');
-  console.log(`Endpoint: ${getApiEndpoint()}`);
+  console.log(`Endpoint: ${API_ENDPOINT}`);
   console.log(`Rate limit: 60 requests per minute per IP\n`);
   console.log('Make sure the dev server is running: bunx wrangler dev --port 8787\n');
   console.log('='.repeat(50) + '\n');
