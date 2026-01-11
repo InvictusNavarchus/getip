@@ -2,6 +2,7 @@
   "name": "getip",
   "$schema": "./node_modules/wrangler/config-schema.json",
   "main": "src/index.ts",
+  "compatibility_date": "2026-01-11",
   "ratelimits": [
     {
       "name": "IP_RATE_LIMITER",
