@@ -1,4 +1,11 @@
 /**
+ * Environment bindings for the Worker
+ */
+interface Env {
+  IP_RATE_LIMITER: RateLimit;
+}
+
+/**
  * Response structure for IP address API
  */
 interface IpResponse {
@@ -92,7 +99,7 @@ function handleOptions(): Response {
  * Main fetch handler for the Worker
  */
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
     // Handle CORS preflight
@@ -118,8 +125,30 @@ export default {
       return createJsonResponse(errorResponse, 404);
     }
 
-    // Extract and return the client IP
+    // Extract the client IP
     const ip = getClientIp(request);
+    
+    // Apply rate limiting based on IP address
+    // Limit: 60 requests per minute per IP per Cloudflare location
+    if (ip) {
+      const { success } = await env.IP_RATE_LIMITER.limit({ key: ip });
+      if (!success) {
+        const errorResponse: ErrorResponse = {
+          error: 'Rate limit exceeded. Maximum 60 requests per minute allowed.',
+          timestamp: new Date().toISOString(),
+        };
+        return new Response(JSON.stringify(errorResponse, null, 2), {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Retry-After': '60',
+            'Access-Control-Allow-Origin': '*',
+          },
+        });
+      }
+    }
+
+    // Return the client IP
     const response: IpResponse = {
       ip,
       timestamp: new Date().toISOString(),
@@ -127,4 +156,4 @@ export default {
 
     return createJsonResponse(response);
   },
-} satisfies ExportedHandler;
+} satisfies ExportedHandler<Env>;

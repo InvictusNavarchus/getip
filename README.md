@@ -8,6 +8,7 @@ A simple, robust API that returns the IP address of anyone who sends a GET reque
 - ✅ **Strongly Typed**: Written in TypeScript with strict type checking
 - ✅ **Fast**: Runs on Cloudflare's edge network
 - ✅ **CORS Enabled**: Can be called from any origin
+- ✅ **Rate Limited**: Prevents abuse with configurable requests per minute per IP (default to 60)
 - ✅ **Standards Compliant**: Follows Cloudflare Workers best practices
 
 ## API Response
@@ -39,6 +40,17 @@ A simple, robust API that returns the IP address of anyone who sends a GET reque
 }
 ```
 
+### Error Response (429 Too Many Requests)
+
+```json
+{
+  "error": "Rate limit exceeded. Maximum 60 requests per minute allowed.",
+  "timestamp": "2026-01-11T04:32:38.000Z"
+}
+```
+
+**Headers**: Includes `Retry-After: 60` header indicating when to retry.
+
 ## How It Works
 
 The API extracts the client IP address from the request headers in the following priority order:
@@ -46,6 +58,18 @@ The API extracts the client IP address from the request headers in the following
 1. **CF-Connecting-IP** - Cloudflare's reliable client IP header (primary)
 2. **X-Real-IP** - Common proxy header (fallback)
 3. **X-Forwarded-For** - Standard proxy header (last resort)
+
+### Rate Limiting
+
+The API implements rate limiting to prevent abuse:
+
+- **Limit**: 60 requests per minute per IP address
+- **Scope**: Per Cloudflare datacenter location (not global)
+- **Implementation**: Uses Cloudflare Workers Rate Limiting binding
+- **Response**: Returns HTTP 429 with `Retry-After` header when exceeded
+
+**Why IP-based limiting?**
+Since this API is anonymous by design (no authentication), the IP address is the only stable identifier available. The limit is generous enough to allow legitimate repeated checks while preventing aggressive abuse.
 
 ## Development
 
@@ -73,6 +97,8 @@ bunx wrangler dev
 ```
 
 This will start a local development server. Note that during local development, the IP address might be `127.0.0.1` or a local network IP.
+
+**Note**: Rate limiting is not enforced in local development mode. To test rate limiting, deploy to Cloudflare Workers.
 
 ### Deployment
 
@@ -106,6 +132,7 @@ getip/
 - CORS is enabled for all origins
 - Responses are not cached to ensure real-time data
 - Only GET requests to the root path are allowed
+- Rate limiting prevents abuse (60 requests/minute per IP per location)
 
 ## License
 
