@@ -2,7 +2,7 @@
  * Example: How to use the GetIP API
  * 
  * This file demonstrates various ways to call the API.
- * You can run this with: bunx tsx examples/usage.ts
+ * You can run this with: bun run examples/usage.ts
  */
 
 import { getApiEndpoint } from '../src/config.ts';
