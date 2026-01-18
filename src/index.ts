@@ -1,10 +1,11 @@
-import { getClientIp, getCountry, getCity, getRegion } from "./http/getHeaders";
+import { getClientIp, getCountry, getCity, getRegion, getAllHeaders } from "./http/getHeaders";
 import { 
   handleOptions, 
   createRateLimitResponse, 
   createIpSuccessResponse,
   createMethodNotAllowedResponse,
-  createNotFoundResponse
+  createNotFoundResponse,
+  createDebugResponse
 } from "./http/createResponse";
 import { Env } from "./types/env";
 
@@ -20,12 +21,18 @@ export default {
       return handleOptions();
     }
 
-    // Only allow GET requests to root path
+    // Only allow GET requests
     if (request.method !== 'GET') {
       return createMethodNotAllowedResponse();
     }
 
-    // Only respond to root path
+    // Handle /debug endpoint - returns all headers and CF metadata
+    if (url.pathname === '/debug') {
+      const allHeaders = getAllHeaders(request);
+      return createDebugResponse(allHeaders, request.cf);
+    }
+
+    // Only respond to root path for IP lookup
     if (url.pathname !== '/') {
       return createNotFoundResponse();
     }

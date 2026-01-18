@@ -107,9 +107,40 @@ export function createMethodNotAllowedResponse(): Response {
  */
 export function createNotFoundResponse(): Response {
   const errorResponse: ErrorResponse = {
-    error: 'Not found. Only root path (/) is available.',
+    error: 'Not found. Available paths: / (IP lookup) and /debug (headers dump).',
     timestamp: new Date().toISOString(),
   };
 
   return createJsonResponse(errorResponse, 404);
+}
+
+/**
+ * Creates a debug response with all request headers and Cloudflare metadata
+ * 
+ * @param headers - All request headers as a plain object
+ * @param cf - Cloudflare request metadata
+ * @returns Response object with 200 status containing debug information
+ */
+export function createDebugResponse(
+  headers: Record<string, string>,
+  cf: Request['cf']
+): Response {
+  const debugData = {
+    headers,
+    cf,
+    timestamp: new Date().toISOString(),
+  };
+
+  return new Response(JSON.stringify(debugData, null, 2), {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  });
 }
