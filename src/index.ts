@@ -1,4 +1,4 @@
-import { getClientIp, getCountry } from "./http/getHeaders";
+import { getClientIp, getCountry, getCity, getRegion } from "./http/getHeaders";
 import { 
   handleOptions, 
   createRateLimitResponse, 
@@ -33,6 +33,8 @@ export default {
     // Extract the client IP and country
     const ip = getClientIp(request);
     const country = getCountry(request);
+    const city = getCity(request);
+    const region = getRegion(request);
     
     // Apply rate limiting based on IP address
     // Limit: 60 requests per minute per IP per Cloudflare location
@@ -44,6 +46,6 @@ export default {
     }
 
     // Return the client IP
-    return createIpSuccessResponse(ip, country);
+    return createIpSuccessResponse(ip, country, city, region);
   },
 } satisfies ExportedHandler<Env>;

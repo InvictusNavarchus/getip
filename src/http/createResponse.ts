@@ -71,11 +71,15 @@ export function createRateLimitResponse(retryAfterSeconds: number = 60): Respons
  */
 export function createIpSuccessResponse(
   ip: string | null,
-  country: string | null
+  country: string | null,
+  city: string | null,
+  region: string | null
 ): Response {
   const response: IpResponse = {
     ip,
     country,
+    city,
+    region,
     timestamp: new Date().toISOString(),
   };
 

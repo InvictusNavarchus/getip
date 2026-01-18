@@ -41,3 +41,22 @@ export function getCountry(request: Request): string | null {
 
   return null;
 }
+
+export function getCity(request: Request): string | null {
+  const city = request.headers.get('CF-IPCity');
+  if (city) {
+    return city;
+  }
+
+  return null;
+}
+
+export function getRegion(request: Request): string | null {
+  const region = request.headers.get('CF-IPRegion');
+  if (region) {
+    return region;
+  }
+
+  return null;
+}
+

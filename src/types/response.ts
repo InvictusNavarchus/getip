@@ -4,6 +4,8 @@
 export interface IpResponse {
   ip: string | null;
   country: string | null;
+  city: string | null;
+  region: string | null;
   timestamp: string;
 }
 
