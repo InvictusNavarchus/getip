@@ -1,4 +1,4 @@
-import { LocationData } from "../types/response";
+import { ReliableLocationData } from "../types/response";
 
 /**
  * Extracts the client IP address from the request
@@ -44,18 +44,13 @@ export function getClientIp(request: Request): string | null {
  * @param cf - The request.cf object from Cloudflare Workers
  * @returns An object containing all available location and network data
  */
-export function getLocationData(cf: Request['cf']): LocationData {
+export function getLocationData(cf: Request['cf']): ReliableLocationData {
   return {
+    asn: (cf?.asn as number | undefined) ?? null,
+    asOrganization: (cf?.asOrganization as string | undefined) ?? null,
     country: (cf?.country as string | undefined) ?? null,
     city: (cf?.city as string | undefined) ?? null,
     region: (cf?.region as string | undefined) ?? null,
-    regionCode: (cf?.regionCode as string | undefined) ?? null,
-    latitude: (cf?.latitude as string | undefined) ?? null,
-    longitude: (cf?.longitude as string | undefined) ?? null,
-    postalCode: (cf?.postalCode as string | undefined) ?? null,
     timezone: (cf?.timezone as string | undefined) ?? null,
-    continent: (cf?.continent as string | undefined) ?? null,
-    asn: (cf?.asn as number | undefined) ?? null,
-    asOrganization: (cf?.asOrganization as string | undefined) ?? null,
   };
 }

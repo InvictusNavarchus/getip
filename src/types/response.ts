@@ -17,9 +17,15 @@ export interface LocationData {
 }
 
 /**
+ * Subset of LocationData that are usually accurate and reliable.
+ * We'll use this as the response
+ */
+export type ReliableLocationData = Pick<LocationData, 'asn' | 'asOrganization' | 'city' | 'region' | 'country' | 'timezone'>;
+
+/**
  * Response structure for IP address API
  */
-export interface IpResponse extends LocationData {
+export interface IpResponse extends ReliableLocationData {
   ip: string | null;
   timestamp: string;
 }

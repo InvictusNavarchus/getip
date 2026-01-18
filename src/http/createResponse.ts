@@ -1,4 +1,4 @@
-import { IpResponse, ErrorResponse, LocationData } from "../types/response";
+import { IpResponse, ErrorResponse, ReliableLocationData } from "../types/response";
 
 /**
  * Creates a JSON response with appropriate headers
@@ -71,7 +71,7 @@ export function createRateLimitResponse(retryAfterSeconds: number = 60): Respons
  */
 export function createIpSuccessResponse(
   ip: string | null,
-  locationData: LocationData
+  locationData: ReliableLocationData
 ): Response {
   const response: IpResponse = {
     ip,
