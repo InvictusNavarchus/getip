@@ -45,33 +45,17 @@ export function getClientIp(request: Request): string | null {
  * @returns An object containing all available location and network data
  */
 export function getLocationData(cf: Request['cf']): LocationData {
-  if (!cf) {
-    return {
-      country: null,
-      city: null,
-      region: null,
-      regionCode: null,
-      latitude: null,
-      longitude: null,
-      postalCode: null,
-      timezone: null,
-      continent: null,
-      asn: null,
-      asOrganization: null,
-    };
-  }
-
   return {
-    country: (cf.country as string | undefined) ?? null,
-    city: (cf.city as string | undefined) ?? null,
-    region: (cf.region as string | undefined) ?? null,
-    regionCode: (cf.regionCode as string | undefined) ?? null,
-    latitude: (cf.latitude as string | undefined) ?? null,
-    longitude: (cf.longitude as string | undefined) ?? null,
-    postalCode: (cf.postalCode as string | undefined) ?? null,
-    timezone: (cf.timezone as string | undefined) ?? null,
-    continent: (cf.continent as string | undefined) ?? null,
-    asn: (cf.asn as number | undefined) ?? null,
-    asOrganization: (cf.asOrganization as string | undefined) ?? null,
+    country: (cf?.country as string | undefined) ?? null,
+    city: (cf?.city as string | undefined) ?? null,
+    region: (cf?.region as string | undefined) ?? null,
+    regionCode: (cf?.regionCode as string | undefined) ?? null,
+    latitude: (cf?.latitude as string | undefined) ?? null,
+    longitude: (cf?.longitude as string | undefined) ?? null,
+    postalCode: (cf?.postalCode as string | undefined) ?? null,
+    timezone: (cf?.timezone as string | undefined) ?? null,
+    continent: (cf?.continent as string | undefined) ?? null,
+    asn: (cf?.asn as number | undefined) ?? null,
+    asOrganization: (cf?.asOrganization as string | undefined) ?? null,
   };
 }
