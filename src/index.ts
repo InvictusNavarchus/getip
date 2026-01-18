@@ -1,11 +1,11 @@
-import { getClientIp, getCountry } from "./lib/getHeaders";
+import { getClientIp, getCountry } from "./http/getHeaders";
 import { 
   handleOptions, 
   createRateLimitResponse, 
   createIpSuccessResponse,
   createMethodNotAllowedResponse,
   createNotFoundResponse
-} from "./lib/createResponse";
+} from "./http/createResponse";
 import { Env } from "./types/env";
 
 /**
