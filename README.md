@@ -108,13 +108,10 @@ The API extracts the client IP address from the request headers in the following
 
 The API implements rate limiting to prevent abuse:
 
-- **Limit**: 60 requests per minute per IP address
+- **Limit**: 60 requests per minute per IP address (configurable)
 - **Scope**: Per Cloudflare datacenter location (not global)
 - **Implementation**: Uses Cloudflare Workers Rate Limiting binding
 - **Response**: Returns HTTP 429 with `Retry-After` header when exceeded
-
-**Why IP-based limiting?**
-Since this API is anonymous by design (no authentication), the IP address is the only stable identifier available. The limit is generous enough to allow legitimate repeated checks while preventing aggressive abuse.
 
 ## Development
 
@@ -192,14 +189,6 @@ getip/
 - **Package Manager**: Bun
 - **Deployment**: Cloudflare Workers
 - **No third-party libraries**: Uses only Web Standards APIs
-
-## Security & Privacy
-
-- The API does not store or log IP addresses
-- CORS is enabled for all origins
-- Responses are not cached to ensure real-time data
-- Only GET requests to the root path are allowed
-- Rate limiting prevents abuse (60 requests/minute per IP per location)
 
 ## License
 
