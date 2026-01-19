@@ -13,5 +13,13 @@ beforeAll(() => {
     );
   }
   
-  console.log(`\n🧪 Running tests against: ${process.env.TEST_ENDPOINT_URL}\n`);
+  // Normalize URL by removing trailing slash to prevent double-slash issues
+  // when concatenating paths like /simple, /debug
+  const originalUrl = process.env.TEST_ENDPOINT_URL;
+  const normalizedUrl = originalUrl.replace(/\/$/, '');
+  
+  // Update the env var with normalized URL
+  process.env.TEST_ENDPOINT_URL = normalizedUrl;
+  
+  console.log(`\n🧪 Running tests against: ${normalizedUrl}\n`);
 });
