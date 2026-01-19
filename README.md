@@ -4,7 +4,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-green)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/farhandigital/getip/blob/master/LICENSE)
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/FarhanDigital/getip)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/farhandigital/getip)
 
 A simple, robust API that returns the IP address and location information for anyone who sends a GET request. Built with TypeScript and deployed on Cloudflare Workers.
 
@@ -170,7 +170,7 @@ This will start a local development server. Note that during local development, 
 
 If you want to self-host this project, you can deploy it to your Cloudflare account with a single click:
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/FarhanDigital/getip)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/farhandigital/getip)
 
 #### Manual Deployment
 
