@@ -139,7 +139,7 @@ bunx tsc --noEmit
 
 **Quick API Tests** (Recommended - ~10 seconds)
 ```bash
-bun test
+bun run test
 ```
 
 See `tests/README.md` for detailed testing documentation.

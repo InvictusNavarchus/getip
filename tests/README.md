@@ -24,5 +24,5 @@ Before running tests, ensure:
 ## Running Tests
 
 ```bash
-bun test
+bun run test
 ```
