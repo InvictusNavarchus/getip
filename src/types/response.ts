@@ -2,7 +2,7 @@
  * Location and network data from Cloudflare's request.cf object
  * This is the single source of truth for location-related fields
  */
-export interface LocationData {
+interface LocationData {
   country: string | null;
   city: string | null;
   region: string | null;

@@ -7,7 +7,7 @@ import { IpResponse, ErrorResponse, ReliableLocationData } from "../types/respon
  * @param status - HTTP status code
  * @returns Response object
  */
-export function createJsonResponse(
+function createJsonResponse(
   data: IpResponse | ErrorResponse,
   status: number = 200
 ): Response {
