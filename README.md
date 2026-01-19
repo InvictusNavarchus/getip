@@ -98,11 +98,17 @@ Returns all request headers and Cloudflare metadata. Useful for debugging and un
 
 ## How It Works
 
+### IP
+
 The API extracts the client IP address from the request headers in the following priority order:
 
 1. **CF-Connecting-IP** - Cloudflare's reliable client IP header (primary)
 2. **X-Real-IP** - Common proxy header (fallback)
 3. **X-Forwarded-For** - Standard proxy header (last resort)
+
+### Location Data
+
+The API extracts the location data (city, country, asn, asOrganization) from Cloudflare's CF object provided by Workers
 
 ### Rate Limiting
 
