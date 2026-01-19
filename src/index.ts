@@ -6,7 +6,8 @@ import {
   createIpSuccessResponse,
   createMethodNotAllowedResponse,
   createNotFoundResponse,
-  createDebugResponse
+  createDebugResponse,
+  createSimpleResponse
 } from "./http/createResponse";
 import { Env } from "./types/env";
 
@@ -31,6 +32,11 @@ export default {
     if (url.pathname === '/debug') {
       const allHeaders = getAllHeaders(request);
       return createDebugResponse(allHeaders, request.cf);
+    }
+
+    // return only the client IP address in plain text
+    if (url.pathname === '/simple') {
+      return createSimpleResponse(getClientIp(request));
     }
 
     // Only respond to root path for IP lookup

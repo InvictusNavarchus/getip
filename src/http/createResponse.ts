@@ -25,6 +25,15 @@ function createJsonResponse(
   });
 }
 
+export function createSimpleResponse(ip: string | null): Response {
+  return new Response(ip, {
+    headers: {
+      'Content-Type': 'text/plain;charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
+
 /**
  * Handles OPTIONS requests for CORS preflight
  */
