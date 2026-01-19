@@ -1,6 +1,6 @@
-# GetIP - Simple IP Address API
+# GetIP - IP Address & Location API
 
-A simple, robust API that returns the IP address of anyone who sends a GET request to the root domain. Built with TypeScript and deployed on Cloudflare Workers.
+A simple, robust API that returns the IP address and location information for anyone who sends a GET request. Built with TypeScript and deployed on Cloudflare Workers.
 
 ## Features
 
@@ -8,44 +8,89 @@ A simple, robust API that returns the IP address of anyone who sends a GET reque
 - ✅ **Strongly Typed**: Written in TypeScript with strict type checking
 - ✅ **Fast**: Runs on Cloudflare's edge network
 - ✅ **CORS Enabled**: Can be called from any origin
-- ✅ **Rate Limited**: Prevents abuse with configurable requests per minute per IP (default to 60)
-- ✅ **Standards Compliant**: Follows Cloudflare Workers best practices
+- ✅ **Rate Limited**: Prevents abuse with configurable requests per minute per IP (default: 60)
+- ✅ **Location Data**: Includes city, region, country, timezone, and ASN information
+- ✅ **Multiple Formats**: JSON (default) or plain text (`/simple`)
+- ✅ **Debug Endpoint**: Full request headers and Cloudflare metadata (`/debug`)
 
-## API Response
+## Endpoints
 
-### Success Response (200 OK)
+### `GET /` - IP + Location Data (JSON)
 
+Returns the client IP address with location information derived from Cloudflare's geolocation data.
+
+**Success Response (200 OK)**
 ```json
 {
   "ip": "203.0.113.42",
-  "timestamp": "2026-01-11T04:32:38.000Z"
+  "asn": 13335,
+  "asOrganization": "CLOUDFLARENET",
+  "city": "San Francisco",
+  "region": "California",
+  "country": "US",
+  "timezone": "America/Los_Angeles",
+  "timestamp": "2026-01-19T03:08:32.000Z"
 }
 ```
 
-### Error Response (405 Method Not Allowed)
+### `GET /simple` - IP Only (Plain Text)
+
+Returns only the IP address as plain text. Useful for shell scripts and simple integrations.
+
+**Success Response (200 OK)**
+```
+203.0.113.42
+```
+
+### `GET /debug` - Full Request Data (JSON)
+
+Returns all request headers and Cloudflare metadata. Useful for debugging and understanding what data Cloudflare provides.
+
+**Success Response (200 OK)**
+```json
+{
+  "headers": {
+    "cf-connecting-ip": "203.0.113.42",
+    "cf-ipcity": "San Francisco",
+    "cf-ipcountry": "US",
+    ...
+  },
+  "cf": {
+    "asn": 13335,
+    "city": "San Francisco",
+    "country": "US",
+    ...
+  },
+  "timestamp": "2026-01-19T03:08:32.000Z"
+}
+```
+
+## Error Responses
+
+### 405 Method Not Allowed
 
 ```json
 {
   "error": "Method not allowed. Only GET requests are supported.",
-  "timestamp": "2026-01-11T04:32:38.000Z"
+  "timestamp": "2026-01-19T03:08:32.000Z"
 }
 ```
 
-### Error Response (404 Not Found)
+### 404 Not Found
 
 ```json
 {
-  "error": "Not found. Only root path (/) is available.",
-  "timestamp": "2026-01-11T04:32:38.000Z"
+  "error": "Not found. Available paths: / (IP + location lookup), /simple (IP only), and /debug (full headers + CF metadata dump).",
+  "timestamp": "2026-01-19T03:08:32.000Z"
 }
 ```
 
-### Error Response (429 Too Many Requests)
+### 429 Too Many Requests
 
 ```json
 {
   "error": "Rate limit exceeded. Maximum 60 requests per minute allowed.",
-  "timestamp": "2026-01-11T04:32:38.000Z"
+  "timestamp": "2026-01-19T03:08:32.000Z"
 }
 ```
 
@@ -111,11 +156,21 @@ bunx wrangler deploy
 ```
 getip/
 ├── src/
-│   └── index.ts          # Main Worker code
-├── package.json          # Dependencies and scripts
-├── tsconfig.json         # TypeScript configuration
-├── wrangler.toml         # Cloudflare Workers configuration
-└── README.md             # This file
+│   ├── http/
+│   │   ├── createResponse.ts   # Response creation functions
+│   │   ├── getClientInfo.ts    # IP and location extraction
+│   │   └── getHeaders.ts       # Request header utilities
+│   ├── types/
+│   │   ├── env.ts              # Environment bindings
+│   │   └── response.ts         # Response type definitions
+│   └── index.ts                # Main Worker orchestrator
+├── examples/
+│   ├── usage.ts                # API usage examples
+│   └── ratelimit-test.ts       # Rate limit testing
+├── package.json                # Dependencies and scripts
+├── tsconfig.json               # TypeScript configuration
+├── wrangler.jsonc              # Cloudflare Workers configuration
+└── README.md                   # This file
 ```
 
 ## Technical Details
