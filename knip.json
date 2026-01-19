@@ -1,5 +1,5 @@
 {
-  "entry": [ "src/index.ts", "examples/**/*.ts"],
-  "project": ["src/**/*.ts", "examples/**/*.ts"]
+  "entry": ["src/index.ts", "tests/**/*.ts"],
+  "project": ["src/**/*.ts", "tests/**/*.ts"]
 }
  
