@@ -135,6 +135,31 @@ bun install
 bunx tsc --noEmit
 ```
 
+### Testing
+
+**Quick API Tests** (Recommended - ~10 seconds)
+```bash
+bun test
+# or: bun test:api
+```
+
+**Full Test Suite** (Including rate limits - ~5+ minutes)
+```bash
+bun test:full
+```
+
+**Rate Limit Tests Only**
+```bash
+bun test:ratelimit
+```
+
+**Test Watch Mode**
+```bash
+bun test:watch
+```
+
+See `tests/README.md` for detailed testing documentation.
+
 ### Local Development
 
 ```bash
@@ -164,11 +189,14 @@ getip/
 │   │   ├── env.ts              # Environment bindings
 │   │   └── response.ts         # Response type definitions
 │   └── index.ts                # Main Worker orchestrator
-├── examples/
-│   ├── usage.ts                # API usage examples
-│   └── ratelimit-test.ts       # Rate limit testing
+├── tests/
+│   ├── api.test.ts             # API endpoint tests
+│   ├── ratelimit.test.ts       # Rate limiting tests
+│   ├── setup.ts                # Test environment setup
+│   └── README.md               # Test documentation
 ├── package.json                # Dependencies and scripts
 ├── tsconfig.json               # TypeScript configuration
+├── vitest.config.ts            # Vitest test configuration
 ├── wrangler.jsonc              # Cloudflare Workers configuration
 └── README.md                   # This file
 ```

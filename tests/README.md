@@ -24,28 +24,68 @@ Before running tests, ensure:
 
 ## Running Tests
 
-### Run All Tests (Single Run)
+### Quick Tests (Recommended for Development)
+
+**API Tests Only** - Fast feedback, no rate limiting tests (~10 seconds)
 ```bash
 bun test
+# or
+bun test:api
+# or
+bunx vitest run tests/api.test.ts
+```
+
+This is the **default** and recommended for:
+- ✅ Quick validation during development
+- ✅ Pre-commit checks
+- ✅ CI/CD pipelines
+- ✅ When you only changed API logic
+
+### Full Test Suite
+
+**All Tests Including Rate Limits** - Complete validation (~5+ minutes)
+```bash
+bun test:full
 # or
 bunx vitest run
 ```
 
-### Watch Mode (Re-run on changes)
+Use this when:
+- 🔍 You modified rate limiting logic
+- 🔍 Running comprehensive pre-deployment checks
+- 🔍 You want complete test coverage
+
+### Rate Limit Tests Only
+
+**Rate Limiting Tests** - Isolated rate limit testing (~3-5 minutes)
+```bash
+bun test:ratelimit
+# or
+bunx vitest run tests/ratelimit.test.ts
+```
+
+Use this when:
+- 🎯 Specifically testing rate limit changes
+- 🎯 Debugging rate limit behavior
+- 🎯 Validating rate limit configuration
+
+### Development Modes
+
+**Watch Mode** - Re-run on file changes (API tests only)
 ```bash
 bun test:watch
 # or
 bunx vitest
 ```
 
-### UI Mode (Interactive browser UI)
+**UI Mode** - Interactive browser UI
 ```bash
 bun test:ui
 # or
 bunx vitest --ui
 ```
 
-### Coverage Report
+**Coverage Report** - Generate coverage (API tests only by default)
 ```bash
 bun test:coverage
 # or
@@ -53,6 +93,7 @@ bunx vitest run --coverage
 ```
 
 ## Test Structure
+
 
 ### API Endpoint Tests (`api.test.ts`)
 
@@ -129,20 +170,33 @@ describe('Feature Name', () => {
 
 ## CI/CD Integration
 
-For continuous integration, consider:
+For continuous integration, we recommend **running only API tests** for fast feedback:
 
-1. **Separate test environments** for production vs staging
-2. **Conditional rate limit tests** (skip in CI, run manually)
-3. **Mock API responses** for faster unit tests
-4. **E2E tests** against deployed Workers
-
-Example CI config:
+**Recommended (Fast CI)**:
 ```yaml
 test:
   script:
     - bun install
-    - bunx vitest run tests/api.test.ts --reporter=json
+    - bun test:api --reporter=json
+    # Or: bunx vitest run tests/api.test.ts --reporter=json
 ```
+
+**Optional Full Tests** (slower, run on schedule or manually):
+```yaml
+test-full:
+  script:
+    - bun install
+    - bun test:full --reporter=json
+  when: manual  # Only run when triggered
+  # Or schedule: nightly
+```
+
+**Best Practices**:
+1. **Fast CI**: Use `test:api` for pull requests and commits
+2. **Full Tests**: Run `test:full` on schedule (nightly/weekly) or pre-deployment
+3. **Separate Environments**: Use staging endpoint for CI tests
+4. **Mock Responses**: Consider mocking for even faster unit tests
+
 
 ## Troubleshooting
 
