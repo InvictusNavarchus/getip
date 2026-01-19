@@ -102,7 +102,19 @@ export function createMethodNotAllowedResponse(): Response {
     timestamp: new Date().toISOString(),
   };
 
-  return createJsonResponse(errorResponse, 405);
+  return new Response(JSON.stringify(errorResponse, null, 2), {
+    status: 405,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Allow': 'GET, OPTIONS',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  });
 }
 
 /**
