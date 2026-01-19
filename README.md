@@ -6,7 +6,7 @@
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/farhandigital/getip)
 
-A simple, robust API that returns the IP address and location information for anyone who sends a GET request. Built with TypeScript and deployed on Cloudflare Workers.
+A simple, robust API that returns your IP address and location information. Built with TypeScript and deployed on Cloudflare Workers.
 
 
 ## Features
