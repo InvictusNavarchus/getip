@@ -1,13 +1,11 @@
 # GetIP - IP Address & Location API
 
-
 ![Version](https://img.shields.io/badge/version-1.0.0-green)
 [![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/farhandigital/getip/blob/master/LICENSE)
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/farhandigital/getip)
 
 A simple, robust API that returns your IP address and location information. Built with TypeScript and deployed on Cloudflare Workers.
-
 
 ## Features
 
@@ -118,7 +116,7 @@ bunx tsc --noEmit
 
 ### Testing
 
-**Quick API Tests** (Recommended - ~10 seconds)
+**Quick API Tests**
 ```bash
 bun run test
 ```
