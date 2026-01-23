@@ -1,5 +1,7 @@
 import type {
+	DebugResponse,
 	ErrorResponse,
+	HttpStatus,
 	IpResponse,
 	ReliableLocationData,
 } from '../types/response';
@@ -27,12 +29,16 @@ function addNewLine(content: string | null): string {
  * @returns Response object
  */
 function createJsonResponse(
-	data: IpResponse | ErrorResponse,
-	status: number = 200,
+	data: IpResponse | ErrorResponse | DebugResponse,
+	status: HttpStatus,
+	additionalHeaders?: HeadersInit,
 ): Response {
 	return new Response(addNewLine(JSON.stringify(data, null, 2)), {
 		status,
-		headers: RESPONSE_HEADERS,
+		headers: {
+			...RESPONSE_HEADERS,
+			...additionalHeaders,
+		},
 	});
 }
 
@@ -66,12 +72,8 @@ export function createRateLimitResponse(
 		timestamp: new Date().toISOString(),
 	};
 
-	return new Response(JSON.stringify(errorResponse, null, 2), {
-		status: 429,
-		headers: {
-			...RESPONSE_HEADERS,
-			'Retry-After': retryAfterSeconds.toString(),
-		},
+	return createJsonResponse(errorResponse, 429, {
+		'Retry-After': retryAfterSeconds.toString(),
 	});
 }
 
@@ -92,7 +94,7 @@ export function createIpSuccessResponse(
 		timestamp: new Date().toISOString(),
 	};
 
-	return createJsonResponse(response);
+	return createJsonResponse(response, 200);
 }
 
 /**
@@ -106,12 +108,8 @@ export function createMethodNotAllowedResponse(): Response {
 		timestamp: new Date().toISOString(),
 	};
 
-	return new Response(JSON.stringify(errorResponse, null, 2), {
-		status: 405,
-		headers: {
-			...RESPONSE_HEADERS,
-			Allow: 'GET, OPTIONS',
-		},
+	return createJsonResponse(errorResponse, 405, {
+		Allow: 'GET, OPTIONS',
 	});
 }
 
@@ -141,14 +139,11 @@ export function createDebugResponse(
 	headers: Record<string, string>,
 	cf: Request['cf'],
 ): Response {
-	const debugData = {
+	const debugData: DebugResponse = {
 		headers,
 		cf,
 		timestamp: new Date().toISOString(),
 	};
 
-	return new Response(JSON.stringify(debugData, null, 2), {
-		status: 200,
-		headers: RESPONSE_HEADERS,
-	});
+	return createJsonResponse(debugData, 200);
 }

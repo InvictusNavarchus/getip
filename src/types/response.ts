@@ -25,6 +25,8 @@ export type ReliableLocationData = Pick<
 	'asn' | 'asOrganization' | 'city' | 'region' | 'country' | 'timezone'
 >;
 
+export type HttpStatus = 200 | 400 | 404 | 405 | 429;
+
 /**
  * Response structure for IP address API
  */
@@ -38,5 +40,11 @@ export interface IpResponse extends ReliableLocationData {
  */
 export interface ErrorResponse {
 	error: string;
+	timestamp: string;
+}
+
+export interface DebugResponse {
+	headers: Record<string, string>;
+	cf: Request['cf'];
 	timestamp: string;
 }
