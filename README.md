@@ -73,37 +73,6 @@ Returns all request headers and Cloudflare metadata. Useful for debugging and un
 }
 ```
 
-## Error Responses
-
-### 405 Method Not Allowed
-
-```json
-{
-  "error": "Method not allowed. Only GET requests are supported.",
-  "timestamp": "2026-01-19T03:08:32.000Z"
-}
-```
-
-### 404 Not Found
-
-```json
-{
-  "error": "Not found. Available paths: / (IP + location lookup), /simple (IP only), and /debug (full headers + CF metadata dump).",
-  "timestamp": "2026-01-19T03:08:32.000Z"
-}
-```
-
-### 429 Too Many Requests
-
-```json
-{
-  "error": "Rate limit exceeded. Maximum 60 requests per minute allowed.",
-  "timestamp": "2026-01-19T03:08:32.000Z"
-}
-```
-
-**Headers**: Includes `Retry-After: 60` header indicating when to retry.
-
 ## How It Works
 
 ### IP
